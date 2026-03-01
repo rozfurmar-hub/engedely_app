@@ -221,8 +221,25 @@ with lc2:
         use_container_width=True,
     )
 
+# ---- Frissítés és fájllista diagnosztika ----
+c_refresh, c_list = st.columns([1, 2])
+with c_refresh:
+    if st.button("🔄 Frissítés (adatok újraolvasása)", use_container_width=True):
+        st.experimental_rerun()
+
+with c_list:
+    with st.expander("Fájllista a data/ mappában", expanded=False):
+        data_dir = BASE_DIR / "data"
+        if data_dir.exists():
+            files = sorted([p.name for p in data_dir.glob("*.json")])
+            st.write(f"Fájlok száma: **{len(files)}**")
+            st.write(files[:100])  # legfeljebb 100 név
+        else:
+            st.warning("A `data/` mappa nem létezik.")
+
 st.info(
     "Megjegyzés: a Streamlit Cloud fájlrendszere nem hosszú távú tárolásra való. "
     "Javasolt rendszeresen letölteni a CSV/ZIP exportot, vagy beállítani külső tartós tárolót "
     "(pl. adatbázis, Google Sheets)."
 )
+
