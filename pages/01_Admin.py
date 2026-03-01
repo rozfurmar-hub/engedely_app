@@ -225,7 +225,7 @@ with lc2:
 c_refresh, c_list = st.columns([1, 2])
 with c_refresh:
     if st.button("🔄 Frissítés (adatok újraolvasása)", use_container_width=True):
-        st.experimental_rerun()
+        st.rerun()
 
 with c_list:
     with st.expander("Fájllista a data/ mappában", expanded=False):
@@ -242,4 +242,5 @@ st.info(
     "Javasolt rendszeresen letölteni a CSV/ZIP exportot, vagy beállítani külső tartós tárolót "
     "(pl. adatbázis, Google Sheets)."
 )
+
 
