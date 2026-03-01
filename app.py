@@ -490,7 +490,8 @@ if submitted:
             else:
                 saved = create_record(record)
                 upsert_msg = L["succ_new"].format(id=saved.get("id"), nev=record.get("nev"))
-
+            st.success(f"Mentve. Rekord ID: {saved.get('id')}")
+            
             # Dokumentumok
             generated_docs = []
             who = sanitize_for_filename(record.get("nev", "dokumentum"))
@@ -608,4 +609,5 @@ try:
     else:
         st.info(L["info_no_records"])
 except Exception as e:
+
     st.error(f"Nem sikerült betölteni a rekordokat: {e}")
