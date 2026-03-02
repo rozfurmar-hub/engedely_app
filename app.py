@@ -91,9 +91,14 @@ def load_labels(lang: str) -> dict:
 DATA_DIR = BASE_DIR / "data"
 TEMPLATES_DIR = BASE_DIR / "templates"
 DEFAULT_TEMPLATE_NAMES = [
-    "sablon_kerelem_adatok_valodisaga.docx",
-    "sablon_kerelem_meghatalmazas_cég xy-t.docx",
-    "sablon_kerelem_meghatalmazas_dolgozo xy-t.docx",
+    "nyilatkozat_adatokrol_sablon.docx",
+    "Mv meghatalmazása cégnek_sablon.docx",
+    "meghatalmazas_dolgozo_xy-t_sablon.docx",
+    "meghatalmazas_ceg_xy-t_sablon.docx",
+    "Cég meghatalmazása RFM-nek_OIF_sablon.docx",
+    "Cég meghatalmazása RFM-nek_BFKH TAJ_sablon.docx",
+    "Befogadó nyilatkozat HAL_sablon.docx",
+    "Befogadó nyilatkozat DS_sablon.docx",
 ]
 
 # Kanonikus (HU) értékek
@@ -612,4 +617,5 @@ try:
 except Exception as e:
 
     st.error(f"Nem sikerült betölteni a rekordokat: {e}")
+
 
