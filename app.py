@@ -93,8 +93,6 @@ TEMPLATES_DIR = BASE_DIR / "templates"
 DEFAULT_TEMPLATE_NAMES = [
     "nyilatkozat_adatokrol_sablon.docx",
     "Mv meghatalmazása cégnek_sablon.docx",
-    "meghatalmazas_dolgozo_xy-t_sablon.docx",
-    "meghatalmazas_ceg_xy-t_sablon.docx",
     "Cég meghatalmazása RFM-nek_OIF_sablon.docx",
     "Cég meghatalmazása RFM-nek_BFKH TAJ_sablon.docx",
     "Befogadó nyilatkozat HAL_sablon.docx",
@@ -617,5 +615,6 @@ try:
 except Exception as e:
 
     st.error(f"Nem sikerült betölteni a rekordokat: {e}")
+
 
 
