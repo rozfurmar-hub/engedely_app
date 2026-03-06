@@ -76,7 +76,7 @@ def load_labels(lang: str) -> dict:
             "err_required_name": "A név megadása kötelező.",
             "err_invalid_date": "Érvénytelen dátum: {field}",
             "err_past_date": "A(z) {field} nem lehet múltbeli.",
-            "ru_latin_notice": "⚠️ Пожалуйста, заполняйте латиницей (A–Z, 0–9) в соответствии с документами. Поля с кириллицей будут автоматически транслитерированы при отправке.",
+            "ru_latin_notice": "⚠️ Пожалуйста, заполняйте латиницей (A–Z, 0–9) в соответствии с документами. Поля с кириллицей будут автоматически транслитерированы при генерировании документов.",
             "ru_latin_applied": "Az űrlap adatain automatikus latin átírást végeztünk (cirill → latin).",
             "ru_job_translated": "A „Magyarországra jövetel előtti foglalkozás” mezőt oroszról magyarra fordítottuk.",
             "ru_job_translit_fallback": "A „Magyarországra jövetel előtti foglalkozás” mezőnél fordítás helyett latin átírást alkalmaztunk.",
@@ -624,6 +624,7 @@ try:
         st.info(L["info_no_records"])
 except Exception as e:
     st.error(f"Nem sikerült betölteni a rekordokat: {e}")
+
 
 
 
