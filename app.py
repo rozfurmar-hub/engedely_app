@@ -583,17 +583,18 @@ if user_msg:
     if chat_lang == "ru":
         auto_reply = (
             "**Спасибо за ваш вопрос!**\n\n"
-            "Пожалуйста, свяжитесь с **Розгоньи‑Фюреди Марией** по следующим контактам:\n"
-            "📧 maria.rozgonyif@ddsg-mahart.com\n"
-            "📞 тел.: +36 30 9824353"
+            "Пожалуйста, свяжитесь с **Марией Надь** по следующим контактам:\n"
+            "📧 maria.nagy@hungaria-xxx.com\n"
+            "📞 тел.: +36 30 2323232"
         )
     else:
         auto_reply = (
             "**Köszönjük kérdését!**\n\n"
-            "Kérjük, keresse **Rozgonyi‑Füredi Máriát** az alábbi elérhetőségeken:\n"
-            "📧 maria.rozgonyif@ddsg-mahart.com\n"
-            "📞 tel.: +36 30 9824353"
+            "Kérjük, keresse **Nagy Máriát** az alábbi elérhetőségeken:\n"
+            "📧 maria.nagy@hungaria-xxx.com\n"
+            "📞 tel.: +36 30 2323232"
         )
+
 
     st.chat_message("assistant").markdown(auto_reply)
     st.session_state["chat_history"].append({"role": "assistant", "content": auto_reply})
@@ -626,3 +627,4 @@ try:
         st.info(L["info_no_records"])
 except Exception as e:
     st.error(f"Nem sikerült betölteni a rekordokat: {e}")
+
