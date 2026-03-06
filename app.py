@@ -196,7 +196,7 @@ def validate_record(r: dict, L: dict, ui_lang: str) -> list[str]:
             hint = "Elvárt: 5–15 karakter, csak angol nagybetű és szám (A–Z, 0–9), szóköz és jel nélkül. Példa: AB1234567."
         errors.append(f"{base_err} {hint}")
 
-    for key in ("szuletesi_datum","utlevel_lejarat","tartozkodasi_engedely_lejarat","jelenlegi_engedely_ervenyessege"):
+    for key in ("szuletesi_datum","utlevel_lejarat","tartozkodasi_engedely_lejarat"):
         if r.get(key):
             try:
                 r[key] = iso_date(r[key])
@@ -204,7 +204,7 @@ def validate_record(r: dict, L: dict, ui_lang: str) -> list[str]:
                 errors.append(L.get("err_invalid_date", "Érvénytelen dátum: {field}").format(field=key))
 
     today = date.today().isoformat()
-    for key in ("utlevel_lejarat","tartozkodasi_engedely_lejarat","jelenlegi_engedely_ervenyessege"):
+    for key in ("utlevel_lejarat","tartozkodasi_engedely_lejarat"):
         if r.get(key) and r[key] <= today:
             errors.append(L.get("err_past_date", "A(z) {field} nem lehet múltbeli.").format(field=key))
     return errors
@@ -615,8 +615,7 @@ try:
                 L_title_id: r.get("id", ""),
                 L_title_nev: r.get("nev", ""),
                 L_title_dob: r.get("szuletesi_datum", ""),
-                L_title_pass: r.get("utlevel_szam", ""),
-                L_title_perm: r.get("jelenlegi_engedely_szama", "")
+                L_title_pass: r.get("utlevel_szam", "")                
             }
             for r in recs[-20:]
         ]
@@ -625,5 +624,6 @@ try:
         st.info(L["info_no_records"])
 except Exception as e:
     st.error(f"Nem sikerült betölteni a rekordokat: {e}")
+
 
 
