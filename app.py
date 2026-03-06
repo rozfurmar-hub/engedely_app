@@ -473,7 +473,7 @@ if submitted:
     # 2) RU: a többi szabad szöveg transliterációja (kivéve a fenti 2 mezőt)
     if ui_lang == "ru":
         to_trans = [
-            "nev","szuletesi_nev","szuletesi_hely",
+            "nev","szuletesi_nev","szuletesi_hely","anyja_leanykori_neve",
             "magyarorszagra_erkezese_elotti_lakcim","lakcim"
         ]
         record, changed = transliterate_record_fields(record, to_trans)
@@ -624,6 +624,7 @@ try:
         st.info(L["info_no_records"])
 except Exception as e:
     st.error(f"Nem sikerült betölteni a rekordokat: {e}")
+
 
 
 
