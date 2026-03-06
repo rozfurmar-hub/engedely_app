@@ -351,7 +351,7 @@ with st.expander(L["help_header"], expanded=False):
 
 # RU UI esetén figyelmeztetés a latin kitöltésre
 if ui_lang == "ru":
-    st.warning(L.get("ru_latin_notice", "Пожалуйста, заполняйте латиницей (A–Z, 0–9)."))
+    st.warning(L.get("ru_latin_notice", "Пожалуйста, заполняйте латиницей (A–Z, 0–9) в соответствии с документами. Поля с кириллицей будут автоматически транслитерированы при отправке."))
 
 # =========================
 # I18n opciók (legördülők) és kanonikusítás
@@ -624,6 +624,7 @@ try:
         st.info(L["info_no_records"])
 except Exception as e:
     st.error(f"Nem sikerült betölteni a rekordokat: {e}")
+
 
 
 
