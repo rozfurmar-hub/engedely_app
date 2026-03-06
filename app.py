@@ -441,8 +441,6 @@ if submitted:
         "utlevel_lejarat": (utlevel_lejarat or "").strip(),
         "tartozkodasi_engedely_szam": (teng_szam or "").strip(),
         "tartozkodasi_engedely_lejarat": (teng_lejarat or "").strip(),
-        "jelenlegi_engedely_szama": (jelenlegi_engedely_szama or "").strip(),
-        "jelenlegi_engedely_ervenyessege": (jelenlegi_engedely_ervenyessege or "").strip(),
         "fertozo_betegseg": fertozo_betegseg,
         "kiskoru_gyermek_magyarorszagon": kiskoru_gyermek_magyarorszagon,
         "lakcim": (lakcim or "").strip()
@@ -627,4 +625,5 @@ try:
         st.info(L["info_no_records"])
 except Exception as e:
     st.error(f"Nem sikerült betölteni a rekordokat: {e}")
+
 
