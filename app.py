@@ -76,7 +76,7 @@ def load_labels(lang: str) -> dict:
             "err_required_name": "A név megadása kötelező.",
             "err_invalid_date": "Érvénytelen dátum: {field}",
             "err_past_date": "A(z) {field} nem lehet múltbeli.",
-            "ru_latin_notice": "⚠️ Пожалуйста, заполняйте латиницей (A–Z, 0–9). Поля с кириллицей будут автоматически транслитерированы при отправке.",
+            "ru_latin_notice": "⚠️ Пожалуйста, заполняйте латиницей (A–Z, 0–9) в соответствии с документами. Поля с кириллицей будут автоматически транслитерированы при отправке.",
             "ru_latin_applied": "Az űrlap adatain automatikus latin átírást végeztünk (cirill → latin).",
             "ru_job_translated": "A „Magyarországra jövetel előtti foglalkozás” mezőt oroszról magyarra fordítottuk.",
             "ru_job_translit_fallback": "A „Magyarországra jövetel előtti foglalkozás” mezőnél fordítás helyett latin átírást alkalmaztunk.",
@@ -93,10 +93,9 @@ TEMPLATES_DIR = BASE_DIR / "templates"
 DEFAULT_TEMPLATE_NAMES = [
     "nyilatkozat_adatokrol_sablon.docx",
     "Mv meghatalmazása cégnek_sablon.docx",
-    "Cég meghatalmazása RFM-nek_OIF_sablon.docx",
-    "Cég meghatalmazása RFM-nek_BFKH TAJ_sablon.docx",
-    "Befogadó nyilatkozat HAL_sablon.docx",
-    "Befogadó nyilatkozat DS_sablon.docx",
+    "Cég meghatalmazása_authorization to NM_OIF_sablon.docx",
+    "Cég meghatalmazása authorization to NM_BFKH TAJ_sablon.docx",
+    "Befogadó nyilatkozat_sablon.docx",
 ]
 
 # Kanonikus (HU) értékek
@@ -325,13 +324,16 @@ def openai_chat(system_prompt: str, user_msg: str, model: str | None = None) -> 
 # =========================
 # UI – Nyelvválasztó és feliratok
 # =========================
-ui_lang = st.sidebar.selectbox("Nyelv / Язык", ["hu", "ru"],
-    index=0,
-    format_func=lambda x: {"hu": "Magyar", "ru": "Русский"}.get(x, x))
+# A kiválasztott nyelvet session_state-ben tároljuk
+if "ui_lang" not in st.session_state:
+    st.session_state["ui_lang"] = "hu"  # induláskor magyar
+
+ui_lang = st.session_state["ui_lang"]
 L = load_labels(ui_lang)
 
 st.title(L["app_title"])
 st.caption(L["app_caption"])
+
 
 # Oldalsáv: sablonok
 st.sidebar.header(L["sidebar_hdr_templates"])
@@ -360,8 +362,21 @@ family_disp, edu_disp, yesno_disp = get_localized_options(ui_lang)
 # Űrlap
 # =========================
 st.subheader(L["form_header"])
+
+# --- Nyelvválasztó az űrlap címe alatt ---
+new_lang = st.selectbox(
+    "Nyelv / Язык",
+    ["hu", "ru"],
+    index=["hu", "ru"].index(ui_lang),
+    format_func=lambda x: {"hu": "Magyar", "ru": "Русский"}.get(x, x),
+    key="ui_lang_selector"
+)
+if new_lang != ui_lang:
+    st.session_state["ui_lang"] = new_lang
+    st.rerun()  # azonnal újrarenderelünk, hogy minden felirat váltson
+
 with st.form("adaturlap", clear_on_submit=False):
-    nev = st.text_input(L["field_nev"], placeholder="pl. Ali Ahmad" if ui_lang == "hu" else "")
+    nev = st.text_input(L["field_nev"], placeholder="pl. Veréb Gábor" if ui_lang == "hu" else "")
     szuletesi_nev = st.text_input(L.get("field_szuletesi_nev", "Születési név"))
     szuletesi_datum = st.text_input(L.get("field_szuletesi_datum", "Születési dátum"),
         placeholder=L.get("ph_szuletesi_datum", "YYYY-MM-DD"))
@@ -381,9 +396,6 @@ with st.form("adaturlap", clear_on_submit=False):
         placeholder=L.get("ph_date", "YYYY-MM-DD"))
     teng_szam = st.text_input(L.get("field_teng_szam", "Tartózkodási engedély száma"))
     teng_lejarat = st.text_input(L.get("field_teng_lejarat", "Tartózkodási engedély lejárata"),
-        placeholder=L.get("ph_date", "YYYY-MM-DD"))
-    jelenlegi_engedely_szama = st.text_input(L.get("field_jelenlegi_engedely_szam", "Jelenlegi engedély száma"))
-    jelenlegi_engedely_ervenyessege = st.text_input(L.get("field_jelenlegi_engedely_ervenyes", "Jelenlegi engedély érvényessége"),
         placeholder=L.get("ph_date", "YYYY-MM-DD"))
     fertozo_betegseg_disp = st.selectbox(L.get("field_fertozo", "Van-e fertőző betegsége?"),
         options=[""] + yesno_disp, index=0)
@@ -493,9 +505,9 @@ if submitted:
             else:
                 saved = create_record(record)
                 upsert_msg = L["succ_new"].format(id=saved.get("id"), nev=record.get("nev"))
-                
+
             st.success(f"Mentve. Rekord ID: {saved.get('id')}")
-            
+
             # Dokumentumok
             generated_docs = []
             who = sanitize_for_filename(record.get("nev", "dokumentum"))
@@ -613,8 +625,4 @@ try:
     else:
         st.info(L["info_no_records"])
 except Exception as e:
-
     st.error(f"Nem sikerült betölteni a rekordokat: {e}")
-
-
-
